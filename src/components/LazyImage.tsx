@@ -21,7 +21,7 @@ const LazyImage = ({ src, alt }: LazyImageProps) => {
     }
   }, [isIntersecting, imageRef]);
 
-  return <img data-test-id='component-image' className='lazy-image' ref={imageRef} src={src + `?w=10`} alt={alt} data-src={src + `?w=1800`} />;
+  return <img data-test-id='component-image' className='lazy-image' ref={imageRef} src={`/images/` + src} alt={alt} data-src={`/images/` + src} />;
 };
 
 export default LazyImage;

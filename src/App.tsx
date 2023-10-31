@@ -20,7 +20,7 @@ function App() {
   const [selectedMedia, setSelectedMedia] = useState(data);
   const SortablePhoto = SortableElement((props: SortablePhotoType) => (
     <>
-      <LazyLoader divClassName='image-wrapper' className='image' src={props?.item.src + `?w=10`} />
+      <LazyLoader divClassName='image-wrapper' className='image' src={`/images/` + props?.item.src} />
       {/* <Image
           className='w-full'
           src={`${mediaPath.thumb}${items.file_name}`}
