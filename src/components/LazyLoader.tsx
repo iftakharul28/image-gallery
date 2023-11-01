@@ -7,6 +7,7 @@ interface Props extends React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImag
   divClassName?: string;
   quality?: number;
   status?: React.ReactNode;
+  children?: React.ReactNode;
 }
 const LazyLoader = (props: Prettify<Props>) => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -17,6 +18,7 @@ const LazyLoader = (props: Prettify<Props>) => {
   });
   return (
     <figure className={Clsx(!isLoaded ? 'lazy-loading' : '', props?.divClassName ? props?.divClassName : '')} ref={imgRef}>
+      {props.children ? props.children : null}
       {isInView ? (
         <img
           className={props?.className}

@@ -9,8 +9,6 @@ type LazyImageProps = {
 
 const LazyImage = ({ src, alt }: LazyImageProps) => {
   const { imageRef, isIntersecting } = useLazyLoadImage('-300px');
-  // return <img data-test-id='component-image' className='lazy-image' ref={imageRef} src={isIntersecting ? src : undefined} alt={alt} data-src={src + `?w=1800`} />;
-
   useEffect(() => {
     if (!imageRef?.current) return;
     if (isIntersecting) {
@@ -21,7 +19,7 @@ const LazyImage = ({ src, alt }: LazyImageProps) => {
     }
   }, [isIntersecting, imageRef]);
 
-  return <img data-test-id='component-image' className='lazy-image' ref={imageRef} src={`/images/` + src} alt={alt} data-src={`/images/` + src} />;
+  return <img data-test-id='component-image' className='lazy-image' ref={imageRef} src={src + `?w=10`} alt={alt} data-src={src + `?w=1800`} />;
 };
 
 export default LazyImage;
