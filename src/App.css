@@ -46,10 +46,10 @@ body {
     width: 1180px;
   }
   .gridbox {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
   }
   .lazy-image:first-child {
-    grid-column: span 2;
+    grid-column: span 3;
   }
 }
 .image-uploader-wrapper {
@@ -70,6 +70,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid #ccc;
 }
 .button {
   border: none;
@@ -80,4 +81,34 @@ body {
   color: white;
   text-transform: capitalize;
   border-radius: 4px;
+}
+.image-select-wrapper {
+  overflow: hidden;
+  position: relative;
+}
+.image-select-bg {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 90px 90px 0;
+  border-color: transparent rgba(221, 221, 221, 0.6) transparent transparent;
+}
+.image-select {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 120px;
+  width: 120px;
+}
+.image-select-input-wrapper {
+  position: absolute;
+  right: 0;
+  top: 0;
+  text-align: right;
+  padding-right: 20px;
+  padding-top: 10px;
+  z-index: 99;
 }

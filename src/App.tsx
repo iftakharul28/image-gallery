@@ -4,8 +4,7 @@ import { data } from './constant/data.ts';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import ArrayMove from './utils/ArrayMove.ts';
 import UploadIcon from './constant/icons/uploadIcon.tsx';
-import LazyLoader from './components/LazyLoader.tsx';
-// import LazyImage from './components/LazyImage.tsx';
+import LazyImage from './components/LazyImage.tsx';
 type onSortEndType = {
   oldIndex: number;
   newIndex: number;
@@ -22,33 +21,31 @@ function App() {
   const deleteMedia = () => {
     const newData = selectedMedia.filter((el) => !deleteItem.includes(el.id));
     setSelectedMedia(newData);
+    setDeleteItem([]);
   };
+  console.log(selectedMedia, deleteItem);
   const SortablePhoto = SortableElement((props: SortablePhotoType) => (
-    <>
-      {/* <LazyImage src={props?.item.src} /> */}
-      <LazyLoader
-        children={
-          <div className='absolute'>
-            <input
-              checked={deleteItem.includes(props?.item.id)}
-              type='checkbox'
-              onChange={() => {
-                if (deleteItem.includes(props?.item.id)) {
-                  console.log('Delete', deleteItem, '=>', props?.item.id);
-                  const newData = deleteItem.filter((el) => el !== props?.item.id);
-                  setDeleteItem(newData);
-                  return;
-                }
-                setDeleteItem([...deleteItem, props?.item.id]);
-              }}
-            />
-          </div>
-        }
-        divClassName='lazy-image relative'
-        className='image'
-        src={props?.item.src}
-      />
-    </>
+    <div className='lazy-image image-select-wrapper'>
+      <LazyImage src={props?.item.src} />
+      <div className='image-select'>
+        <div className='image-select-input-wrapper'>
+          <input
+            checked={deleteItem.includes(props?.item.id)}
+            type='checkbox'
+            onChange={() => {
+              if (deleteItem.includes(props?.item.id)) {
+                console.log('Delete', deleteItem, '=>', props?.item.id);
+                const newData = deleteItem.filter((el) => el !== props?.item.id);
+                setDeleteItem(newData);
+                return;
+              }
+              setDeleteItem([...deleteItem, props?.item.id]);
+            }}
+          />
+        </div>
+        <div className='image-select-bg'></div>
+      </div>
+    </div>
   ));
   const SortableGallery = SortableContainer((props: SortableContainerType) => (
     <div className='gridbox'>
@@ -81,7 +78,7 @@ function App() {
             ...selectedMedia,
             {
               src: URL.createObjectURL(e?.target?.files[0]),
-              id: selectedMedia.length,
+              id: selectedMedia.length + 1,
             },
           ]);
         }}
@@ -94,13 +91,17 @@ function App() {
   };
   return (
     <div className='container'>
-      <div className=' header'>
-        <h1>Optimized Image Loading</h1>
+      <div className='header'>
         {deleteItem.length ? (
-          <button type='button' className='button' onClick={deleteMedia}>
-            delete
-          </button>
-        ) : null}
+          <>
+            <h1>{deleteItem.length} file selected</h1>
+            <button type='button' className='button' onClick={deleteMedia}>
+              delete
+            </button>
+          </>
+        ) : (
+          <h1>Optimized Image Gallery</h1>
+        )}
       </div>
       <SortableGallery
         // eslint-disable-next-line
