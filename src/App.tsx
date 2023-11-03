@@ -1,30 +1,22 @@
 import { useState } from 'react';
-import './App.css';
-import { data } from './constant/data.ts';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import ArrayMove from './utils/ArrayMove.ts';
-import UploadIcon from './constant/icons/uploadIcon.tsx';
+import { data } from './constant/data.ts';
 import LazyImage from './components/LazyImage.tsx';
+import UploadIcon from './constant/icons/uploadIcon.tsx';
+import './App.css';
 type onSortEndType = {
   oldIndex: number;
   newIndex: number;
 };
-type SortableContainerType = {
-  items: typeof data;
-};
 type SortableMediaType = {
   item: (typeof data)[number];
 };
+
 function App() {
   const [selectedMedia, setSelectedMedia] = useState(data);
   const [deleteItem, setDeleteItem] = useState<number[]>([]);
-  const deleteMedia = () => {
-    const newData = selectedMedia.filter((el) => !deleteItem.includes(el.id));
-    setSelectedMedia(newData);
-    setDeleteItem([]);
-  };
-  // console.log('selectedMedia', '=>', selectedMedia, 'deleteItem', '=>', deleteItem);
-  const SortableMedia = SortableElement((props: SortableMediaType) => (
+  const SortableMedia = SortableElement<SortableMediaType>((props: SortableMediaType) => (
     <figure className='image-wrapper image-select-wrapper'>
       <LazyImage src={props?.item.src} />
       <div className='image-select'>
@@ -47,48 +39,47 @@ function App() {
       </div>
     </figure>
   ));
-  const SortableGallery = SortableContainer((props: SortableContainerType) => (
-    <div className='gridbox'>
-      {props?.items.map((item, index) => (
-        <SortableMedia
-          index={index}
-          // eslint-disable-next-line
-          // @ts-ignore
-          item={item}
-          key={`${index}_new-prod-media`}
-        />
-      ))}
-
-      <label htmlFor='upload-button'>
-        <div className='image-uploader-wrapper '>
-          <div className='image-uploader'>
-            <UploadIcon width='30px' />
-            <p>Drag and drop files here</p>
+  const GaleryContainer = SortableContainer<{ children: React.ReactNode }>(({ children }: { children: React.ReactNode }) => {
+    return (
+      <div className='gridbox'>
+        {children}
+        <label htmlFor='upload-button'>
+          <div className='image-uploader-wrapper '>
+            <div className='image-uploader'>
+              <UploadIcon width='30px' />
+              <p>Drag and drop files here</p>
+            </div>
           </div>
-        </div>
-        {/* )} */}
-      </label>
-      <input
-        type='file'
-        id='upload-button'
-        className='sr-only'
-        onChange={(e) => {
-          if (!e?.target?.files) return;
-          setSelectedMedia([
-            ...selectedMedia,
-            {
-              src: URL.createObjectURL(e?.target?.files[0]),
-              id: selectedMedia.length + 1,
-            },
-          ]);
-        }}
-      />
-    </div>
-  ));
+          {/* )} */}
+        </label>
+        <input
+          type='file'
+          id='upload-button'
+          className='sr-only'
+          onChange={(e) => {
+            if (!e?.target?.files) return;
+            setSelectedMedia([
+              ...selectedMedia,
+              {
+                src: URL.createObjectURL(e?.target?.files[0]),
+                id: selectedMedia.length + 1,
+              },
+            ]);
+          }}
+        />
+      </div>
+    );
+  });
   const onSortEnd = (props: onSortEndType) => {
     const newData = ArrayMove(selectedMedia, props?.oldIndex, props?.newIndex).filter((el) => !!el);
     setSelectedMedia(newData);
   };
+  const deleteMedia = () => {
+    const newData = selectedMedia.filter((el) => !deleteItem.includes(el.id));
+    setSelectedMedia(newData);
+    setDeleteItem([]);
+  };
+
   return (
     <div className='container'>
       <div className='header'>
@@ -103,13 +94,11 @@ function App() {
           <h1>Optimized Image Gallery</h1>
         )}
       </div>
-      <SortableGallery
-        // eslint-disable-next-line
-        // @ts-ignore
-        items={selectedMedia}
-        onSortEnd={onSortEnd}
-        axis={'xy'}
-      />
+      <GaleryContainer onSortEnd={onSortEnd} axis='xy'>
+        {selectedMedia.map((value, index) => (
+          <SortableMedia key={`item-${index}`} index={index} item={value} />
+        ))}
+      </GaleryContainer>
     </div>
   );
 }
