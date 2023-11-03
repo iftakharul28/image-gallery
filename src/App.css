@@ -1,27 +1,15 @@
-html {
-  overflow-x: hidden;
-}
-html,
-body {
-  width: 100%;
-}
 .container {
   width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
+  padding: 0 10px;
   margin-right: auto;
   margin-left: auto;
 }
 .gridbox {
+  width: 100%;
   display: grid;
-  grid-template-rows: masonry;
-  gap: 30px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
   padding: 40px 0;
-}
-@media (min-width: 576px) {
-  .gridbox {
-    display: grid;
-  }
 }
 @media (min-width: 768px) {
   .container {
@@ -29,7 +17,7 @@ body {
     padding: 0;
   }
   .gridbox {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 20px;
   }
 }
@@ -37,28 +25,24 @@ body {
   .container {
     width: 960px;
   }
-  .gridbox {
-    grid-template-columns: 1fr 1fr;
+  .image-wrapper:first-child {
+    grid-column: span 2;
+    grid-row: span 2;
+    max-height: 100% !important;
   }
 }
 @media (min-width: 1200px) {
   .container {
     width: 1180px;
   }
-  .gridbox {
-    grid-template-columns: repeat(5, 1fr);
-  }
-  .lazy-image:first-child {
-    grid-column: span 3;
-  }
 }
 .image-uploader-wrapper {
-  background-color: #ddd;
+  background-color: rgba(221, 221, 221, 0.4);
   display: grid;
   place-items: center;
   width: 100%;
-  height: 350px;
-  border: 1px solid #ccc;
+  height: 220px;
+  border: 2px dotted #ccc;
   border-radius: 10px;
 }
 .image-uploader {
@@ -70,6 +54,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-bottom: 10px;
   border-bottom: 1px solid #ccc;
 }
 .button {
@@ -81,6 +66,8 @@ body {
   color: white;
   text-transform: capitalize;
   border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
 }
 .image-select-wrapper {
   overflow: hidden;
@@ -94,7 +81,7 @@ body {
   height: 0;
   border-style: solid;
   border-width: 0 90px 90px 0;
-  border-color: transparent rgba(221, 221, 221, 0.6) transparent transparent;
+  border-color: transparent rgba(0, 0, 0, 0.45) transparent transparent;
 }
 .image-select {
   position: absolute;

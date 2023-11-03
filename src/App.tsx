@@ -12,7 +12,7 @@ type onSortEndType = {
 type SortableContainerType = {
   items: typeof data;
 };
-type SortablePhotoType = {
+type SortableMediaType = {
   item: (typeof data)[number];
 };
 function App() {
@@ -23,9 +23,9 @@ function App() {
     setSelectedMedia(newData);
     setDeleteItem([]);
   };
-  console.log(selectedMedia, deleteItem);
-  const SortablePhoto = SortableElement((props: SortablePhotoType) => (
-    <div className='lazy-image image-select-wrapper'>
+  // console.log('selectedMedia', '=>', selectedMedia, 'deleteItem', '=>', deleteItem);
+  const SortableMedia = SortableElement((props: SortableMediaType) => (
+    <figure className='image-wrapper image-select-wrapper'>
       <LazyImage src={props?.item.src} />
       <div className='image-select'>
         <div className='image-select-input-wrapper'>
@@ -45,12 +45,12 @@ function App() {
         </div>
         <div className='image-select-bg'></div>
       </div>
-    </div>
+    </figure>
   ));
   const SortableGallery = SortableContainer((props: SortableContainerType) => (
     <div className='gridbox'>
       {props?.items.map((item, index) => (
-        <SortablePhoto
+        <SortableMedia
           index={index}
           // eslint-disable-next-line
           // @ts-ignore
